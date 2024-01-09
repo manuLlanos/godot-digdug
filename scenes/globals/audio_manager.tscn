@@ -1,0 +1,51 @@
+[gd_scene load_steps=11 format=3 uid="uid://o8ak34sc0qc2"]
+
+[ext_resource type="Script" path="res://scenes/globals/audio_manager.gd" id="1_4srxa"]
+[ext_resource type="AudioStream" uid="uid://c3y5xehs4pmf2" path="res://sounds/body_medium_break3.wav" id="2_4h54l"]
+[ext_resource type="AudioStream" uid="uid://bwsqdm0jv1dc4" path="res://sounds/rumble1.wav" id="3_mjucu"]
+[ext_resource type="AudioStream" uid="uid://bwysxh4sbhlie" path="res://sounds/digup1.wav" id="4_at76j"]
+[ext_resource type="AudioStream" uid="uid://cfd4xmdnxkcmr" path="res://sounds/concrete_break3.wav" id="4_iojrm"]
+[ext_resource type="AudioStream" uid="uid://c10xhh6kjn3yt" path="res://sounds/rock2.wav" id="5_lifoe"]
+[ext_resource type="AudioStream" uid="uid://cq5hw771eed0m" path="res://sounds/sand_impact_bullet1.wav" id="6_r7ps5"]
+[ext_resource type="AudioStream" uid="uid://bgc804ocjd3tw" path="res://sounds/zap7.wav" id="7_gkmbq"]
+[ext_resource type="AudioStream" uid="uid://bq3ftry6a4osl" path="res://sounds/pain1.wav" id="8_khpa6"]
+[ext_resource type="AudioStream" uid="uid://cdimrayu0bv0c" path="res://sounds/distract1.wav" id="9_w3b2o"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_4srxa")
+
+[node name="Crush" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_4h54l")
+volume_db = -10.0
+
+[node name="Dig" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_mjucu")
+volume_db = -20.0
+
+[node name="DigOut" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_at76j")
+volume_db = -30.0
+
+[node name="RockCrash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_iojrm")
+volume_db = -20.0
+
+[node name="RockRumble" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_lifoe")
+volume_db = -20.0
+
+[node name="HitEarth" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_r7ps5")
+volume_db = -30.0
+
+[node name="Zap" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gkmbq")
+volume_db = -5.0
+
+[node name="BugDeath" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_khpa6")
+volume_db = -10.0
+
+[node name="BugAlert" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_w3b2o")
+volume_db = -20.0

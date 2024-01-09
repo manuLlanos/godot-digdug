@@ -1,0 +1,113 @@
+[gd_scene load_steps=2 format=3 uid="uid://e7hs18nut0pd"]
+
+[ext_resource type="Script" path="res://scenes/ui/ui.gd" id="1_l0pna"]
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_l0pna")
+
+[node name="ScoreContainer" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScoreContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScoreContainer/VBoxContainer"]
+layout_mode = 2
+text = "SCORE"
+
+[node name="ScoreLabel" type="Label" parent="ScoreContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0
+"
+horizontal_alignment = 2
+
+[node name="LivesContainer" type="MarginContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LivesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LivesContainer/VBoxContainer"]
+layout_mode = 2
+text = "LIVES
+"
+
+[node name="LivesLabel" type="Label" parent="LivesContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2
+"
+horizontal_alignment = 2
+
+[node name="LevelContainer" type="MarginContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LevelContainer/VBoxContainer"]
+layout_mode = 2
+text = "LEVEL
+"
+
+[node name="LevelLabel" type="Label" parent="LevelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1
+"
+horizontal_alignment = 2
+
+[node name="GameOverContainer" type="MarginContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOverLabel" type="Label" parent="GameOverContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "GAME OVER
+"
+uppercase = true
+
+[node name="LevelWonContainer" type="MarginContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelWonLabel" type="Label" parent="LevelWonContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "LEVEL WON
+"
+uppercase = true

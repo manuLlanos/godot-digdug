@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=3 uid="uid://bp60gc38j46qh"]
+
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="1_3nkfk"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_cx41o"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="2_3c61q"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="3_kovvh"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="4_so1i2"]
+[ext_resource type="PackedScene" uid="uid://h88v2qytj37d" path="res://scenes/components/smooth_movement.tscn" id="6_7qu86"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp2un"]
+size = Vector2(60, 60)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_cp0xg"]
+
+[node name="Enemy" type="Area2D"]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("1_cx41o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cp2un")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.988235, 0, 0, 1)
+texture = SubResource("CanvasTexture_cp0xg")
+region_enabled = true
+region_rect = Rect2(0, 0, 60, 60)
+
+[node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_3nkfk")
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("2_3c61q")
+initial_state = NodePath("Wander")
+
+[node name="Wander" type="Node" parent="StateChart/Root"]
+script = ExtResource("3_kovvh")
+
+[node name="toDig" type="Node" parent="StateChart/Root/Wander"]
+script = ExtResource("4_so1i2")
+to = NodePath("../../Dig")
+event = &"cannot_reach_player"
+
+[node name="toChase" type="Node" parent="StateChart/Root/Wander"]
+script = ExtResource("4_so1i2")
+to = NodePath("../../Chase")
+event = &"can_reach_player"
+
+[node name="Dig" type="Node" parent="StateChart/Root"]
+script = ExtResource("3_kovvh")
+
+[node name="toWander" type="Node" parent="StateChart/Root/Dig"]
+script = ExtResource("4_so1i2")
+to = NodePath("../../Wander")
+event = &"cannot_reach_player"
+
+[node name="toChase" type="Node" parent="StateChart/Root/Dig"]
+script = ExtResource("4_so1i2")
+to = NodePath("../../Chase")
+event = &"can_reach_player"
+
+[node name="Chase" type="Node" parent="StateChart/Root"]
+script = ExtResource("3_kovvh")
+
+[node name="toWander" type="Node" parent="StateChart/Root/Chase"]
+script = ExtResource("4_so1i2")
+to = NodePath("../../Wander")
+event = &"chase_timeout"
+
+[node name="SmoothMovement" parent="." instance=ExtResource("6_7qu86")]
+unique_name_in_owner = true
+
+[node name="WanderTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ChaseTimer" type="Timer" parent="."]
+
+[connection signal="state_entered" from="StateChart/Root/Wander" to="." method="_on_wander_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Wander" to="." method="_on_wander_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Chase" to="." method="_on_chase_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Chase" to="." method="_on_chase_state_physics_processing"]
+[connection signal="timeout" from="WanderTimer" to="." method="_on_wander_timer_timeout"]
+[connection signal="timeout" from="ChaseTimer" to="." method="_on_chase_timer_timeout"]

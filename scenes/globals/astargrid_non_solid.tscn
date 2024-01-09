@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://q825r7yjlnor"]
+
+[ext_resource type="Script" path="res://scenes/globals/astargrid_non_solid.gd" id="1_jus5d"]
+
+[node name="AstargridNonSolid" type="Node"]
+script = ExtResource("1_jus5d")

@@ -1,0 +1,267 @@
+[gd_scene load_steps=32 format=3 uid="uid://cqrj7octw21ua"]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_664k3"]
+[ext_resource type="Texture2D" uid="uid://chsnqheisawga" path="res://graphics/engineer-spritesheet.png" id="2_5jp5k"]
+[ext_resource type="PackedScene" uid="uid://h88v2qytj37d" path="res://scenes/components/smooth_movement.tscn" id="2_d35m8"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_1iwo8"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_7puxh"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_8vmno"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_ee2ed"]
+[ext_resource type="PackedScene" uid="uid://de451u2o4e3ha" path="res://scenes/weapon/chain_hook.tscn" id="7_6mtpa"]
+[ext_resource type="AudioStream" uid="uid://b5pwtr5dvtp8n" path="res://sounds/engineer_painsevere01.mp3" id="9_hhc3a"]
+[ext_resource type="AudioStream" uid="uid://ddtfgrhsskhci" path="res://sounds/engineer_painsevere03.mp3" id="10_u1rvc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_64601"]
+size = Vector2(38, 60)
+
+[sub_resource type="Animation" id="Animation_xopk1"]
+resource_name = "idle"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_hnj4y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_e4cit"]
+resource_name = "running"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_l8ojt"]
+resource_name = "shooting"
+length = 0.1
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_id4an"]
+resource_name = "death"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [7, 8, 9]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pq4ei"]
+_data = {
+"RESET": SubResource("Animation_hnj4y"),
+"death": SubResource("Animation_id4an"),
+"idle": SubResource("Animation_xopk1"),
+"running": SubResource("Animation_e4cit"),
+"shooting": SubResource("Animation_l8ojt")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xbpur"]
+animation = &"death"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_btdyh"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xlyac"]
+animation = &"running"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_st8jw"]
+animation = &"running"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_03j3m"]
+animation = &"running"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ypwkn"]
+animation = &"running"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_dmwwi"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_btdyh")
+blend_point_0/pos = Vector2(0, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_xlyac")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_st8jw")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_03j3m")
+blend_point_3/pos = Vector2(-1, 0)
+blend_point_4/node = SubResource("AnimationNodeAnimation_ypwkn")
+blend_point_4/pos = Vector2(0, 1)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kv55h"]
+animation = &"shooting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3gmwk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a7e8x"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c0jrd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_17v6h"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p028y"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_art0g"]
+states/death/node = SubResource("AnimationNodeAnimation_xbpur")
+states/death/position = Vector2(549.333, 33.6667)
+states/moving/node = SubResource("AnimationNodeBlendSpace2D_dmwwi")
+states/moving/position = Vector2(347.667, 101)
+states/shooting/node = SubResource("AnimationNodeAnimation_kv55h")
+states/shooting/position = Vector2(348.111, -25.6667)
+transitions = ["Start", "moving", SubResource("AnimationNodeStateMachineTransition_3gmwk"), "moving", "shooting", SubResource("AnimationNodeStateMachineTransition_a7e8x"), "shooting", "death", SubResource("AnimationNodeStateMachineTransition_c0jrd"), "moving", "death", SubResource("AnimationNodeStateMachineTransition_17v6h"), "shooting", "moving", SubResource("AnimationNodeStateMachineTransition_p028y")]
+graph_offset = Vector2(-56, -94)
+
+[node name="Player" type="Area2D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_664k3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 1)
+shape = SubResource("RectangleShape2D_64601")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("2_5jp5k")
+hframes = 6
+vframes = 2
+region_rect = Rect2(0, 0, 60, 60)
+
+[node name="SmoothMovement" parent="." instance=ExtResource("2_d35m8")]
+unique_name_in_owner = true
+
+[node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_1iwo8")
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("4_7puxh")
+initial_state = NodePath("Normal")
+
+[node name="Normal" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_8vmno")
+
+[node name="toShooting" type="Node" parent="StateChart/Root/Normal"]
+script = ExtResource("6_ee2ed")
+to = NodePath("../../Shooting")
+event = &"player_shoot"
+
+[node name="toDead" type="Node" parent="StateChart/Root/Normal"]
+script = ExtResource("6_ee2ed")
+to = NodePath("../../Dead")
+event = &"death"
+
+[node name="Shooting" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_8vmno")
+
+[node name="toNormal" type="Node" parent="StateChart/Root/Shooting"]
+script = ExtResource("6_ee2ed")
+to = NodePath("../../Normal")
+event = &"player_release_chain"
+
+[node name="toDead" type="Node" parent="StateChart/Root/Shooting"]
+script = ExtResource("6_ee2ed")
+to = NodePath("../../Dead")
+event = &"death"
+
+[node name="Dead" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_8vmno")
+
+[node name="ChainHook" parent="." instance=ExtResource("7_6mtpa")]
+unique_name_in_owner = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pq4ei")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+unique_name_in_owner = true
+root_node = NodePath("%AnimationTree/..")
+libraries = {
+"": SubResource("AnimationLibrary_pq4ei")
+}
+tree_root = SubResource("AnimationNodeStateMachine_art0g")
+anim_player = NodePath("../AnimationPlayer")
+parameters/moving/blend_position = Vector2(0, 0)
+
+[node name="DeathSounds" type="Node" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DeathSounds"]
+stream = ExtResource("9_hhc3a")
+volume_db = -10.0
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="DeathSounds"]
+stream = ExtResource("10_u1rvc")
+volume_db = -10.0
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="DeathSounds"]
+volume_db = -10.0
+
+[connection signal="state_entered" from="StateChart/Root/Normal" to="." method="_on_normal_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Normal" to="." method="_on_normal_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Shooting" to="." method="_on_shooting_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Shooting" to="." method="_on_shooting_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Dead" to="." method="_on_dead_state_entered"]
