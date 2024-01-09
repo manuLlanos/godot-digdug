@@ -1,7 +1,7 @@
 This time I learned enough to create a bug-free smooth tile movement system. I started applying state machines and learned about implementing A* pathfinding
 
-WASD to move
-SPACE to shoot "electric hook" 
+# WASD to move
+# SPACE to shoot "electric hook" 
 (I wanted to do something that wasn't an air pump. the idea was to later add electric effects but I think after a week I had to get the game done and not increase the scope too much)
 
 Rocks spawn randomly
